@@ -14,9 +14,10 @@ const insert = async (data) => {
   }
 
   const result = await User.create(data);
-  delete result.dataValues.password;
 
-  const token = generateToken(result);
+  const { password: _, ...user } = result.dataValues;
+
+  const token = generateToken(user);
 
   return {
     status: 201,

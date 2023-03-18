@@ -10,7 +10,7 @@ const config = {
 
 const generateToken = (user) => {
   try {
-    return { token: jwt.sign(user.dataValues, JWT_SECRET, config) };
+    return { token: jwt.sign(user, JWT_SECRET, config) };
   } catch (error) {
     throw new Error('Error:', error);
   }

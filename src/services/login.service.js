@@ -14,7 +14,7 @@ const authenticate = async (email, password) => {
     };
   }
 
-  const token = generateToken(result);
+  const token = generateToken(result.dataValues);
 
   return {
     status: 200,
