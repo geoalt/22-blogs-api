@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { generateToken } = require('../utils/auth');
+const { generateToken } = require('../auth/auth');
 
 const insert = async (data) => {
   const emailAlreayInUse = await User.findOne({ where: { email: data.email } });
