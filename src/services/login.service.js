@@ -7,8 +7,6 @@ const authenticate = async (email, password) => {
     where: { email, password },
   });
 
-  console.log(result);
-
   if (!result) {
     return {
       status: 400,
