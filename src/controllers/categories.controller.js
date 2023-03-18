@@ -5,6 +5,12 @@ const insert = async (req, res) => {
   return res.status(result.status).json(result.payload);
 };
 
+const findAll = async (req, res) => {
+  const result = await services.categories.findAll();
+  return res.status(result.status).json(result.payload);
+};
+
 module.exports = {
   insert,
+  findAll,
 };

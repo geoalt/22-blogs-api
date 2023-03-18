@@ -8,6 +8,17 @@ const insert = async (data) => {
   };
 };
 
+const findAll = async () => {
+  const result = await Category.findAll();
+  const list = result.map((category) => category.dataValues);
+
+  return {
+    status: 200,
+    payload: list,
+  };
+};
+
 module.exports = {
   insert,
+  findAll,
 };
