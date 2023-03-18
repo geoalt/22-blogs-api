@@ -38,7 +38,25 @@ const findAll = async () => {
   };
 };
 
+const findOne = async (id) => {
+  const result = await User.findByPk(id);
+
+  if (!result) {
+    return {
+      status: 404,
+      payload: { message: 'User does not exist' },
+    };
+  }
+
+  const { password: _, ...user } = result.dataValues;
+  return {
+    status: 200,
+    payload: user,
+  };
+};
+
 module.exports = {
   insert,
   findAll,
+  findOne,
 };
