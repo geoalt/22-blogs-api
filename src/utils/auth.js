@@ -8,10 +8,9 @@ const config = {
   algorithm: 'HS256',
 };
 
-const generateToken = (obj) => {
+const generateToken = (user) => {
   try {
-    console.log(obj);
-    return { token: jwt.sign(obj.dataValues, JWT_SECRET, config) };
+    return { token: jwt.sign(user.dataValues, JWT_SECRET, config) };
   } catch (error) {
     throw new Error('Error:', error);
   }
