@@ -1,9 +1,23 @@
-const validateHeaderAuth = (req, res, next) => {
-  if (!req.headers.authorization) {
+const { verifyToken } = require('../auth/auth');
+
+const isEmpty = (req, res) => {
+  const { authorization: token } = req.headers;
+  if (!token) {
     return res.status(401).json({ message: 'Token not found' });
   }
-
-  return next();
 };
+
+const validateToken = (req, res) => {
+  const { authorization: token } = req.headers;
+
+  const result = verifyToken(token);
+
+  if (result.status === 401) {
+    return res.status(result.status).json(result.payload);
+  }
+};
+
+const validateHeaderAuth = (req, res, next) =>
+  isEmpty(req, res) || validateToken(req, res) || next();
 
 module.exports = validateHeaderAuth;

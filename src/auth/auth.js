@@ -19,10 +19,8 @@ const generateToken = (user) => {
 const verifyToken = (token) => {
   try {
     const authenticate = jwt.verify(token, JWT_SECRET);
-    console.log(authenticate);
     return authenticate;
   } catch (error) {
-    console.error(error.message);
     return {
       status: 401,
       payload: {

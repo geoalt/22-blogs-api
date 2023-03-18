@@ -25,6 +25,20 @@ const insert = async (data) => {
   };
 };
 
+const findAll = async () => {
+  const result = await User.findAll();
+  const list = result.map((user) => {
+    const { password: _, ...data } = user.dataValues;
+    return data;
+  });
+
+  return {
+    status: 200,
+    payload: list,
+  };
+};
+
 module.exports = {
   insert,
+  findAll,
 };
