@@ -75,8 +75,30 @@ const findOne = async (id) => {
   return { status: 200, payload: result };
 };
 
+const update = async (req) => {
+  const { id } = req.params;
+  const { authorization: token } = req.headers;
+  const post = req.body;
+
+  const { payload: { userId: postOwner } } = await findOne(id);
+  const { id: loggerUser } = verifyToken(token);
+
+  if (loggerUser !== postOwner) {
+    return { status: 401, payload: { message: 'Unauthorized user' } };
+  }
+
+  await BlogPost.update(post, {
+    where: { id },
+  });
+  
+  const { payload } = await findOne(id);
+
+  return { status: 200, payload };
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
+  update,
 };

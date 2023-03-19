@@ -16,8 +16,14 @@ const findOne = async (req, res) => {
   return res.status(result.status).json(result.payload);
 };
 
+const update = async (req, res) => {
+  const result = await services.post.update(req);
+  return res.status(result.status).json(result.payload);
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
+  update,
 };

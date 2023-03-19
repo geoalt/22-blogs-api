@@ -9,4 +9,6 @@ post.post('/', middlewares.validatePost, controllers.post.insert);
 post.get('/', controllers.post.findAll);
 post.get('/:id', controllers.post.findOne);
 
+post.put('/:id', middlewares.validateUpdate, controllers.post.update);
+
 module.exports = post;

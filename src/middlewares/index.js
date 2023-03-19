@@ -3,6 +3,7 @@ const validateUserData = require('./validateUserData');
 const validateHeaderAuth = require('./validateHeaderAuth');
 const validateCategories = require('./validateCategories');
 const validatePost = require('./validatePost');
+const validateUpdate = require('./validatePostUpdate');
 
 module.exports = {
   validateLogin,
@@ -10,4 +11,5 @@ module.exports = {
   validateHeaderAuth,
   validateCategories,
   validatePost,
+  validateUpdate,
 };
