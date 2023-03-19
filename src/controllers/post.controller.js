@@ -10,7 +10,14 @@ const findAll = async (_req, res) => {
   return res.status(result.status).json(result.payload);
 };
 
+const findOne = async (req, res) => {
+  const { id } = req.params;
+  const result = await services.post.findOne(id);
+  return res.status(result.status).json(result.payload);
+};
+
 module.exports = {
   insert,
   findAll,
+  findOne,
 };

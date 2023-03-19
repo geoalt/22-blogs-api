@@ -52,7 +52,31 @@ const findAll = async () => {
   return { status: 200, payload: result };
 };
 
+const findOne = async (id) => {
+  const result = await BlogPost.findByPk(id, {
+    include: [
+      { 
+        model: User, 
+        as: 'user', 
+        attributes: { exclude: 'password' }, 
+      },
+      { 
+        model: Category, 
+        as: 'categories', 
+        through: PostCategory,
+      },
+    ],
+  });
+
+  if (!result) {
+    return { status: 404, payload: { message: 'Post does not exist' } };
+  }
+
+  return { status: 200, payload: result };
+};
+
 module.exports = {
   insert,
   findAll,
+  findOne,
 };
