@@ -1,4 +1,4 @@
-const { BlogPost, Category, PostCategory, sequelize } = require('../models');
+const { BlogPost, Category, PostCategory, User, sequelize } = require('../models');
 const { verifyToken } = require('../auth/auth');
 
 const doesThatCategoriesExist = async (categories) => 
@@ -33,6 +33,26 @@ const insert = async (req) => {
   return { status: 201, payload: result.dataValues };
 };
 
+const findAll = async () => {
+  const result = await BlogPost.findAll({
+    include: [
+      { 
+        model: User, 
+        as: 'user', 
+        attributes: { exclude: 'password' }, 
+      },
+      { 
+        model: Category, 
+        as: 'categories', 
+        through: PostCategory,
+      },
+    ],
+  });
+  
+  return { status: 200, payload: result };
+};
+
 module.exports = {
   insert,
+  findAll,
 };
