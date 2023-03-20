@@ -75,15 +75,25 @@ const findOne = async (id) => {
   return { status: 200, payload: result };
 };
 
+const authenticateOwnership = async (id, token) => {
+  const { payload: { userId: postOwner } } = await findOne(id);
+  const { id: loggerUser } = verifyToken(token);
+
+  if (loggerUser !== postOwner) {
+    return false;
+  }
+
+  return true;
+};
+
 const update = async (req) => {
   const { id } = req.params;
   const { authorization: token } = req.headers;
   const post = req.body;
 
-  const { payload: { userId: postOwner } } = await findOne(id);
-  const { id: loggerUser } = verifyToken(token);
+  const isTheOwner = await authenticateOwnership(id, token);
 
-  if (loggerUser !== postOwner) {
+  if (!isTheOwner) {
     return { status: 401, payload: { message: 'Unauthorized user' } };
   }
 
@@ -96,9 +106,31 @@ const update = async (req) => {
   return { status: 200, payload };
 };
 
+const destroy = async (req) => {
+  const { id } = req.params;
+  const { authorization: token } = req.headers;
+
+  const doesPostExist = await findOne(id);
+  
+  if (doesPostExist.status === 404) {
+    return doesPostExist;
+  }
+
+  const isTheOwner = await authenticateOwnership(id, token);
+  
+  if (!isTheOwner) {
+    return { status: 401, payload: { message: 'Unauthorized user' } };
+  }
+
+  await BlogPost.destroy({ where: { id } });
+
+  return { status: 204, payload: '' };
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
   update,
+  destroy,
 };

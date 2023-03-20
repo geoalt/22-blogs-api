@@ -21,9 +21,15 @@ const update = async (req, res) => {
   return res.status(result.status).json(result.payload);
 };
 
+const destroy = async (req, res) => {
+  const result = await services.post.destroy(req);
+  return res.status(result.status).json(result.payload);
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
   update,
+  destroy,
 };

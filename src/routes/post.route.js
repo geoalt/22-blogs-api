@@ -11,4 +11,6 @@ post.get('/:id', controllers.post.findOne);
 
 post.put('/:id', middlewares.validateUpdate, controllers.post.update);
 
+post.delete('/:id', controllers.post.destroy);
+
 module.exports = post;
