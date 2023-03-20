@@ -1,4 +1,10 @@
-const { BlogPost, Category, PostCategory, User, sequelize } = require('../models');
+const { Op } = require('sequelize');
+const { 
+  BlogPost,
+  Category,
+  PostCategory,
+  User,
+  sequelize } = require('../models');
 const { verifyToken } = require('../auth/auth');
 
 const doesThatCategoriesExist = async (categories) => 
@@ -127,10 +133,31 @@ const destroy = async (req) => {
   return { status: 204, payload: '' };
 };
 
+const search = async (query) => {
+  console.log(query);
+  const result = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.substring]: query } },
+        { content: { [Op.substring]: query } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: 'password' } },
+      { model: Category, as: 'categories', through: PostCategory },
+    ],
+    
+  });
+
+  console.log(result);
+  return { status: 200, payload: result };
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
   update,
   destroy,
+  search,
 };

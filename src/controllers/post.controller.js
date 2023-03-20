@@ -26,10 +26,17 @@ const destroy = async (req, res) => {
   return res.status(result.status).json(result.payload);
 };
 
+const search = async (req, res) => {
+  const { q } = req.query;
+  const result = await services.post.search(q);
+  return res.status(result.status).json(result.payload);
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
   update,
   destroy,
+  search,
 };
