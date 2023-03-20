@@ -16,8 +16,14 @@ const findOne = async (req, res) => {
   return res.status(result.status).json(result.payload);
 };
 
+const destroy = async (req, res) => {
+  const result = await services.user.destroy(req);
+  return res.status(result.status).json(result.payload);
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
+  destroy,
 };

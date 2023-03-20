@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { generateToken } = require('../auth/auth');
+const { generateToken, verifyToken } = require('../auth/auth');
 
 const insert = async (data) => {
   const emailAlreayInUse = await User.findOne({ where: { email: data.email } });
@@ -55,8 +55,22 @@ const findOne = async (id) => {
   };
 };
 
+const destroy = async (req) => {
+  // const { id } = req.params;
+  const { authorization: token } = req.headers;
+
+  const user = verifyToken(token);
+
+  console.log(user);
+  
+  await User.destroy({ where: { ...user.id } });
+
+  return { status: 204, payload: '' };
+};
+
 module.exports = {
   insert,
   findAll,
   findOne,
+  destroy,
 };
